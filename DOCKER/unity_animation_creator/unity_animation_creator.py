@@ -30,22 +30,20 @@ class Unity_animation_creator(DockWidget):
 		if (len(root.childNodes()) > 0):
 			aboveNum = len(root.childNodes()) - 1
 		else:
-			aboveNum = None
-			
+			aboveNum = None		
 		
 		root.addChildNode(self.document.createNode("Frame_" + str(len(root.childNodes()) + 1), "grouplayer"), root.childNodes()[aboveNum])
 		root.childNodes()[len(root.childNodes()) - 1].addChildNode(self.document.createNode("Frame_" + str(len(root.childNodes())) + "_Child", "paintlayer"), None)
 		
 		#NEED TO FIX KRITA NOT UPDATING OPACITY IN CANVAS
+		#COULD BE A DRIVER/OpenGL ISSUE. RESEARCH MORE
+		#IF SO, NOT MUCH CAN BE DONE
 		children = root.childNodes()		
 		i = len(children) - 1
 		o = 1
 		while (i >= 0):
 			if(o < self.FramesToShow):
 				children[i].setOpacity(255 / o)
-				#UNTIL THEN, JUST TURN VISIBILITY OFF FOR ALL EXCEPT NEW FRAME
-				if(i != len(children) - 1):
-					children[i].setVisible(False)
 			else:
 				children[i].setOpacity(255)
 				children[i].setVisible(False)
@@ -53,7 +51,7 @@ class Unity_animation_creator(DockWidget):
 			i -= 1
 			o += 1	
 			
-		self.document.setActiveNode(root.childNodes()[len(root.childNodes()) - 1])
+		self.document.setActiveNode(root.childNodes()[len(root.childNodes()) - 1].childNodes()[0])
 
 	def __init__(self):
 		super().__init__()
